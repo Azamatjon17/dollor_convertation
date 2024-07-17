@@ -8,6 +8,7 @@ class ConverCourseBloc extends Bloc<ConverCourseBlocEvent, ConverCourseBlocState
   ConverCourseBloc() : super(InitialConverState()) {
     on<GetConverEvent>(_getConverts);
     on<ConverToMoneyEvent>(_countMoney);
+    on<SearchCurrencyEvent>(_searchCurrency);
   }
 
   _getConverts(GetConverEvent event, emit) async {
@@ -28,5 +29,20 @@ class ConverCourseBloc extends Bloc<ConverCourseBlocEvent, ConverCourseBlocState
      double result = event.moneyFrom / event.moneyTo * 10;
     result = result / 10;
     emit(CountConverState(result: result));
+  }
+
+  _searchCurrency(SearchCurrencyEvent event, emit) async {
+    try {
+      emit(LoadingConverState());
+      final moneys = await _convertationHttpService.getCurses();
+      final searchResults = moneys.where((money) => money.title.toLowerCase().contains(event.query.toLowerCase())).toList();
+      emit(SearchResultState(searchResults: searchResults));
+    } catch (e) {
+      emit(
+        ErrorConverState(
+          message: e.toString(),
+        ),
+      );
+    }
   }
 }

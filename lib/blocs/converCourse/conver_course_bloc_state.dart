@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:dollor_convertation/data/models/money.dart';
 
 sealed class ConverCourseBlocState {}
@@ -23,4 +21,9 @@ final class CountConverState extends ConverCourseBlocState {
 final class ErrorConverState extends ConverCourseBlocState {
   final String message;
   ErrorConverState({required this.message});
+}
+
+final class SearchResultState extends ConverCourseBlocState {
+  List<Money> searchResults;
+  SearchResultState({required this.searchResults});
 }

@@ -10,3 +10,8 @@ final class ConverToMoneyEvent extends ConverCourseBlocEvent {
     required this.moneyFrom,
   });
 }
+
+final class SearchCurrencyEvent extends ConverCourseBlocEvent {
+  final String query;
+  SearchCurrencyEvent({required this.query});
+}
